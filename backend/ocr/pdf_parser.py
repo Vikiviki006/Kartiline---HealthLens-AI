@@ -1,7 +1,7 @@
 import pdfplumber
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 def extract_text_from_pdf(pdf_path):
-
     text = ""
 
     with pdfplumber.open(pdf_path) as pdf:
@@ -11,4 +11,11 @@ def extract_text_from_pdf(pdf_path):
             if page_text:
                 text += page_text + "\n"
 
-    return text
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=1000,
+        chunk_overlap=200
+    )
+
+    chunks = splitter.split_text(text)
+
+    return chunks
