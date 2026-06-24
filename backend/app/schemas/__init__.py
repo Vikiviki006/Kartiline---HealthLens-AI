@@ -1,0 +1,1 @@
+# HealthLens AI — schemas package
