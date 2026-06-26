@@ -51,7 +51,7 @@ class ReportController:
                 "total_markers": len(r.markers) if hasattr(r, "markers") else 0,
                 "abnormal_markers": sum(
                     1 for m in (r.markers or [])
-                    if m.severity in ("abnormal", "critical")
+                    if m.status in ("abnormal", "critical")
                 ),
             }
             for r in reports
@@ -80,7 +80,7 @@ class ReportController:
                         "value": m.value,
                         "unit": m.unit,
                         "reference_range": m.reference_range,
-                        "severity": m.severity,
+                        "severity": m.status,
                         "numeric_value": float(m.numeric_value) if m.numeric_value else None,
                         "category": m.category,
                     }
@@ -96,19 +96,11 @@ class ReportController:
     def trigger_analysis(
         self, report_id: uuid.UUID, user_id: uuid.UUID, force: bool = False
     ) -> JSONResponse:
-        analysis = self._analysis_svc.run_analysis(report_id, user_id, force)
+        report = self._analysis_svc.run_analysis(report_id, user_id, force)
         return success_response(
             data={
-                "id": str(analysis.id),
-                "report_id": str(analysis.report_id),
-                "status": analysis.status,
-                "ai_provider": analysis.ai_provider,
-                "model_used": analysis.model_used,
-                "health_summary": analysis.health_summary,
-                "abnormal_markers": analysis.abnormal_markers,
-                "recommendations": analysis.recommendations,
-                "doctor_questions": analysis.doctor_questions,
-                "processing_time_ms": analysis.processing_time_ms,
-                "created_at": analysis.created_at.isoformat(),
+                "report_id": str(report.id),
+                "status": report.status,
+                "message": "Analysis completed successfully"
             }
         )

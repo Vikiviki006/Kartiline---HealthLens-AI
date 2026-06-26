@@ -10,12 +10,14 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
-
+from app.database.base import Base
+from app.database.session import engine
 from app.api.router import api_router
 from app.core.config import settings
 from app.middleware.exception_middleware import ExceptionMiddleware
 from app.middleware.logging_middleware import LoggingMiddleware
 from app.utils.logger import logger
+import app.models
 
 
 # ── Lifespan ──────────────────────────────────────────────────────────────────
@@ -30,6 +32,7 @@ async def lifespan(app: FastAPI):
     # Ensure upload directory exists
     from app.utils.file_helper import ensure_upload_dir
     ensure_upload_dir()
+    Base.metadata.create_all(bind=engine)
     yield
     logger.info(f"🛑 {settings.APP_NAME} shutting down")
 

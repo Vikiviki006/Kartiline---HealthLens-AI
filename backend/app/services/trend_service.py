@@ -7,8 +7,8 @@ from collections import defaultdict
 
 from sqlalchemy.orm import Session
 
-from app.models.extracted_marker_model import ExtractedMarker
-from app.models.report_model import MedicalReport
+from app.models.report_marker_model import ReportMarker
+from app.models.report_model import Report
 from app.services.ai_service import ai_service
 from app.utils.logger import logger
 
@@ -26,20 +26,20 @@ class TrendService:
         """
         rows = (
             self._db.query(
-                ExtractedMarker.marker_name,
-                ExtractedMarker.numeric_value,
-                ExtractedMarker.unit,
-                ExtractedMarker.severity,
-                ExtractedMarker.category,
-                MedicalReport.created_at,
+                ReportMarker.marker_name,
+                ReportMarker.numeric_value,
+                ReportMarker.unit,
+                ReportMarker.status,
+                ReportMarker.category,
+                Report.created_at,
             )
-            .join(MedicalReport, MedicalReport.id == ExtractedMarker.report_id)
+            .join(Report, Report.id == ReportMarker.report_id)
             .filter(
-                MedicalReport.user_id == user_id,
-                MedicalReport.is_active == True,
-                ExtractedMarker.numeric_value.isnot(None),
+                Report.user_id == user_id,
+                Report.is_active == True,
+                ReportMarker.numeric_value.isnot(None),
             )
-            .order_by(MedicalReport.created_at.asc())
+            .order_by(Report.created_at.asc())
             .all()
         )
 
@@ -55,7 +55,7 @@ class TrendService:
                 {
                     "date": row.created_at.strftime("%Y-%m-%d"),
                     "value": float(row.numeric_value),
-                    "severity": row.severity,
+                    "severity": row.status,
                 }
             )
 

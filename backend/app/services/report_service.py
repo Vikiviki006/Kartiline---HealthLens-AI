@@ -9,8 +9,8 @@ from sqlalchemy.orm import Session
 
 from app.core.constants import ReportStatus, MarkerSeverity
 from app.core.exceptions import ReportNotFoundException
-from app.models.extracted_marker_model import ExtractedMarker
-from app.models.report_model import MedicalReport
+from app.models.report_marker_model import ReportMarker
+from app.models.report_model import Report
 from app.repositories.report_repository import ReportRepository
 from app.services.ocr_service import ocr_service
 from app.utils.logger import logger
@@ -29,7 +29,7 @@ class ReportService:
         stored_path: str,
         file_size_bytes: int,
         mime_type: str,
-    ) -> MedicalReport:
+    ) -> Report:
         """
         Create a new report record, run OCR, persist extracted text.
         """
@@ -62,7 +62,7 @@ class ReportService:
 
         return self._repo.get_by_id(report.id)  # type: ignore
 
-    def get_report(self, report_id: uuid.UUID, user_id: uuid.UUID) -> MedicalReport:
+    def get_report(self, report_id: uuid.UUID, user_id: uuid.UUID) -> Report:
         report = self._repo.get_by_id(report_id, user_id=user_id)
         if not report:
             raise ReportNotFoundException(str(report_id))
@@ -77,7 +77,7 @@ class ReportService:
         report_type: str | None = None,
         sort_by: str = "created_at",
         sort_order: str = "desc",
-    ) -> tuple[list[MedicalReport], int]:
+    ) -> tuple[list[Report], int]:
         return self._repo.list_by_user(
             user_id=user_id,
             page=page,

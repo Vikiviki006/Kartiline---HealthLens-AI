@@ -26,8 +26,8 @@ class User(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
     is_verified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
     # ── Relationships ──────────────────────────────────────────────────────────
-    reports: Mapped[list["MedicalReport"]] = relationship(  # type: ignore[name-defined]
-        "MedicalReport", back_populates="user", cascade="all, delete-orphan"
+    reports: Mapped[list["Report"]] = relationship(  # type: ignore[name-defined]
+        "Report", back_populates="user", cascade="all, delete-orphan"
     )
     upload_history: Mapped[list["UploadHistory"]] = relationship(  # type: ignore[name-defined]
         "UploadHistory", back_populates="user", cascade="all, delete-orphan"

@@ -8,10 +8,11 @@ from app.database.session import engine
 
 # ── Import all models to register them with metadata ──────────────────────────
 from app.models.user_model import User  # noqa: F401
-from app.models.report_model import MedicalReport  # noqa: F401
-from app.models.extracted_marker_model import ExtractedMarker  # noqa: F401
-from app.models.analysis_model import AIAnalysis  # noqa: F401
+from app.models.report_model import Report  # noqa: F401
+from app.models.report_marker_model import ReportMarker  # noqa: F401
+from app.models.marker_analysis_model import MarkerAnalysis  # noqa: F401
 from app.models.upload_model import UploadHistory  # noqa: F401
+from app.models.medical_marker_model import MedicalMarker  # noqa: F401
 
 
 def init_db() -> None:

@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from app.repositories.report_repository import ReportRepository
 from app.repositories.analysis_repository import AnalysisRepository
-from app.models.extracted_marker_model import ExtractedMarker
+from app.models.report_marker_model import ReportMarker
 from app.core.constants import MarkerSeverity, ReportStatus
 from app.utils.logger import logger
 
@@ -38,7 +38,26 @@ class DashboardService:
         # Latest analysis
         latest_analysis = None
         if recent_reports:
-            latest_analysis = self._analysis_repo.get_by_report_id(recent_reports[0].id)
+            latest_report = recent_reports[0]
+            from app.models.marker_analysis_model import MarkerAnalysis
+            
+            abnormal_markers = self._db.query(ReportMarker).filter(
+                ReportMarker.report_id == latest_report.id,
+                ReportMarker.status.in_(["High", "Low", "Critical"])
+            ).all()
+            
+            health_summary_parts = []
+            for rm in abnormal_markers:
+                ma = self._db.query(MarkerAnalysis).filter(MarkerAnalysis.report_marker_id == rm.id).first()
+                if ma and ma.gemma_summary:
+                    health_summary_parts.append(f"{rm.marker_name}: {ma.gemma_summary}")
+                    
+            latest_analysis = {
+                "report_id": str(latest_report.id),
+                "health_summary": "\n\n".join(health_summary_parts) if health_summary_parts else "All markers are normal.",
+                "abnormal_markers": abnormal_markers,
+                "recommendations": []
+            }
 
         return {
             "total_reports": total_reports,
@@ -53,19 +72,19 @@ class DashboardService:
     def _get_top_abnormal_markers(self, user_id: uuid.UUID, limit: int = 5) -> list[str]:
         """Return the most frequently abnormal marker names for the user."""
         from sqlalchemy import func
-        from app.models.report_model import MedicalReport
+        from app.models.report_model import Report
 
         result = (
-            self._db.query(ExtractedMarker.marker_name, func.count(ExtractedMarker.id).label("cnt"))
-            .join(MedicalReport, MedicalReport.id == ExtractedMarker.report_id)
+            self._db.query(ReportMarker.marker_name, func.count(ReportMarker.id).label("cnt"))
+            .join(Report, Report.id == ReportMarker.report_id)
             .filter(
-                MedicalReport.user_id == user_id,
-                ExtractedMarker.severity.in_(
-                    [MarkerSeverity.ABNORMAL.value, MarkerSeverity.CRITICAL.value]
+                Report.user_id == user_id,
+                ReportMarker.status.in_(
+                    ["High", "Critical"]
                 ),
             )
-            .group_by(ExtractedMarker.marker_name)
-            .order_by(func.count(ExtractedMarker.id).desc())
+            .group_by(ReportMarker.marker_name)
+            .order_by(func.count(ReportMarker.id).desc())
             .limit(limit)
             .all()
         )

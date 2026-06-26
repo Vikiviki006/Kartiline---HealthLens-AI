@@ -25,7 +25,7 @@ class UploadHistory(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
     )
     report_id: Mapped[uuid.UUID | None] = mapped_column(
         UUID(as_uuid=True),
-        ForeignKey("medical_reports.id", ondelete="SET NULL"),
+        ForeignKey("reports.id", ondelete="SET NULL"),
         nullable=True,
         index=True,
     )
@@ -39,8 +39,8 @@ class UploadHistory(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
 
     # ── Relationships ──────────────────────────────────────────────────────────
     user: Mapped["User"] = relationship("User", back_populates="upload_history")  # type: ignore[name-defined]
-    report: Mapped["MedicalReport | None"] = relationship(  # type: ignore[name-defined]
-        "MedicalReport", back_populates="upload_history"
+    report: Mapped["Report | None"] = relationship(  # type: ignore[name-defined]
+        "Report", back_populates="upload_history"
     )
 
     __table_args__ = (

@@ -17,7 +17,7 @@ from app.database.base import Base
 
 # Import all models so their metadata is registered
 from app.database.database import (  # noqa: F401
-    User, MedicalReport, ExtractedMarker, AIAnalysis, UploadHistory
+    User, Report, ReportMarker, MarkerAnalysis, UploadHistory, MedicalMarker
 )
 
 config = context.config

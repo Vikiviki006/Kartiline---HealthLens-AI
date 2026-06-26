@@ -72,11 +72,13 @@ Return JSON only:
 
 def _call_gemini(prompt: str) -> str:
     """Call Google Gemini API and return raw text response."""
-    import google.generativeai as genai
+    from google import genai
 
-    genai.configure(api_key=settings.GEMINI_API_KEY)
-    model = genai.GenerativeModel(settings.GEMINI_MODEL)
-    response = model.generate_content(prompt)
+    client = genai.Client(api_key=settings.GEMINI_API_KEY)
+    response = client.models.generate_content(
+        model=settings.GEMINI_MODEL,
+        contents=prompt
+    )
     return response.text
 
 

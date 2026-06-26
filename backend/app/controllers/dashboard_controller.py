@@ -41,10 +41,10 @@ class DashboardController:
                 "trend_summaries": trends,
                 "latest_analysis": (
                     {
-                        "report_id": str(data["latest_analysis"].report_id),
-                        "health_summary": data["latest_analysis"].health_summary,
-                        "abnormal_count": len(data["latest_analysis"].abnormal_markers or []),
-                        "recommendations_count": len(data["latest_analysis"].recommendations or []),
+                        "report_id": data["latest_analysis"]["report_id"],
+                        "health_summary": data["latest_analysis"]["health_summary"],
+                        "abnormal_count": len(data["latest_analysis"]["abnormal_markers"]),
+                        "recommendations_count": len(data["latest_analysis"]["recommendations"]),
                     }
                     if data.get("latest_analysis")
                     else None
