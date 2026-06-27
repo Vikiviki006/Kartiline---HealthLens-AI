@@ -37,6 +37,10 @@ async def upload_report(
     """
     import uuid
     user_id_str = _get_current_user_id(request)
-    user_id = uuid.UUID(user_id_str)
+    try:
+        user_id = uuid.UUID(user_id_str)
+    except ValueError:
+        # If it's an email (demo mode), generate a consistent UUID from it
+        user_id = uuid.uuid5(uuid.NAMESPACE_DNS, user_id_str)
     ctrl = UploadController(db)
     return await ctrl.handle_upload(file=file, user_id=user_id, request=request)
