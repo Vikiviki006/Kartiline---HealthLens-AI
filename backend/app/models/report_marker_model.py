@@ -3,7 +3,7 @@ ReportMarker ORM model.
 """
 
 import uuid
-from sqlalchemy import ForeignKey, String, Numeric
+from sqlalchemy import Column, ForeignKey, String, Numeric, Text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -16,7 +16,7 @@ class ReportMarker(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
     marker_name: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
     value: Mapped[str | None] = mapped_column(String(100), nullable=True)
     unit: Mapped[str | None] = mapped_column(String(50), nullable=True)
-    reference_range: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    reference_range = Column(Text)
     status: Mapped[str | None] = mapped_column(String(50), nullable=True)
     numeric_value: Mapped[float | None] = mapped_column(Numeric(10, 4), nullable=True)
     category: Mapped[str | None] = mapped_column(String(100), nullable=True)
