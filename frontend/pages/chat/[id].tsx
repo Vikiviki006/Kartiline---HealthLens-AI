@@ -72,7 +72,7 @@ export default function ChatPage() {
       const assistantMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: response.data.answer || response.data.message || "Sorry, I couldn't process your request.",
+        content: response.data.data.answer || response.data.message || "Sorry, I couldn't process your request.",
         timestamp: new Date(),
       };
 
