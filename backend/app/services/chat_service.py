@@ -35,13 +35,16 @@ class ChatService:
         
         prompt = f"""
 You are a specialized medical AI assistant. The user is asking a follow-up question about their medical report.
-Do NOT invent new medical facts. Rely heavily on the provided RAG knowledge context.
+Do NOT invent new medical facts. Rely heavily on the provided RAG knowledge context and the raw document text.
 
---- PATIENT REPORT MARKERS ---
-{marker_str}
+--- PATIENT REPORT MARKERS (EXTRACTED) ---
+{marker_str if marker_str else "No markers extracted yet."}
+
+--- RAW REPORT TEXT ---
+{report.extracted_text if report.extracted_text else "No raw text available."}
 
 --- MEDICAL KNOWLEDGE CONTEXT (RAG) ---
-{context_str}
+{context_str if context_str else "No additional knowledge found for these markers."}
 
 --- USER QUESTION ---
 {question}
