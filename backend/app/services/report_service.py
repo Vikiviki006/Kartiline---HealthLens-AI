@@ -42,6 +42,7 @@ class ReportService:
             mime_type=mime_type,
             status=ReportStatus.PENDING.value,
         )
+        self._repo._db.commit()
 
         try:
             self._repo.update_status(report.id, ReportStatus.PROCESSING.value)
@@ -53,12 +54,14 @@ class ReportService:
                 extracted_text=extracted_text,
                 ocr_engine_used=engine_used,
             )
+            self._repo._db.commit()
             logger.bind(report_id=str(report.id)).info("Report OCR completed")
         except Exception as exc:
             logger.error(f"OCR failed for report {report.id}: {exc}")
             self._repo.update_status(
                 report.id, ReportStatus.FAILED.value, error_message=str(exc)
             )
+            self._repo._db.commit()
 
         return self._repo.get_by_id(report.id)  # type: ignore
 

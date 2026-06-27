@@ -6,6 +6,7 @@ Catches all unhandled exceptions and returns consistent error envelopes.
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse
+from fastapi import HTTPException
 
 from app.core.exceptions import AppException
 from app.utils.logger import logger
@@ -29,6 +30,16 @@ class ExceptionMiddleware(BaseHTTPMiddleware):
                     "message": exc.message,
                     "error_code": exc.error_code,
                 },
+            )
+        except HTTPException as exc:
+            return JSONResponse(
+                status_code=exc.status_code,
+                content={
+                    "success": False,
+                    "message": exc.detail,
+                    "error_code": "HTTP_ERROR",
+                },
+                headers=exc.headers
             )
         except Exception as exc:
             logger.exception(f"Unhandled exception: {exc}")

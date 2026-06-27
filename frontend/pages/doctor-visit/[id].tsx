@@ -22,7 +22,8 @@ export default function DoctorVisitPage() {
     };
 
     fetchReport();
-  }, [id, getReport]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   const handleDownload = () => {
     // In production, this would generate a PDF

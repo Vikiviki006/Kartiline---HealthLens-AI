@@ -24,6 +24,7 @@ class User(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
         String(50), nullable=False, default=UserRole.PATIENT.value
     )
     is_verified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    encrypted_identifier: Mapped[str] = mapped_column(String(255), nullable=True)
 
     # ── Relationships ──────────────────────────────────────────────────────────
     reports: Mapped[list["Report"]] = relationship(  # type: ignore[name-defined]

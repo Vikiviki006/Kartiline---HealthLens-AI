@@ -60,6 +60,7 @@ class UploadController:
             ip_address=request.client.host if request.client else None,
             user_agent=request.headers.get("user-agent"),
         )
+        self._upload_repo._db.commit()
 
         preview = (report.extracted_text or "")[:300]
         return created_response(

@@ -23,7 +23,8 @@ export default function TrendsPage() {
     };
 
     fetchReport();
-  }, [id, getReport]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   const trendData = [
     { date: "Jan", glucose: 95, hemoglobin: 14.2, platelets: 250 },

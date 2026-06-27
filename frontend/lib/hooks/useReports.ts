@@ -18,6 +18,7 @@ export interface ReportDetail extends Report {
   mime_type: string;
   ocr_engine_used?: string;
   extracted_text: string;
+  ai_summary?: string;
   markers: Marker[];
 }
 

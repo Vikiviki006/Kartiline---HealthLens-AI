@@ -24,6 +24,7 @@ class Report(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
     report_date: Mapped[str | None] = mapped_column(String(50), nullable=True)
     report_type: Mapped[str | None] = mapped_column(String(100), nullable=True)
     error_message: Mapped[str | None] = mapped_column(Text, nullable=True)
+    ai_summary: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     user: Mapped["User"] = relationship("User", back_populates="reports")
     markers: Mapped[list["ReportMarker"]] = relationship("ReportMarker", back_populates="report", cascade="all, delete-orphan")

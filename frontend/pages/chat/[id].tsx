@@ -42,11 +42,12 @@ export default function ChatPage() {
     };
 
     fetchReport();
-  }, [id, getReport]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputValue.trim()) return;
+    if (!inputValue.trim() || !id) return;
 
     // Add user message
     const userMessage: ChatMessage = {
@@ -61,17 +62,25 @@ export default function ChatPage() {
     setSending(true);
 
     try {
-      // Simulate AI response (in production, call backend)
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
+      const response = await import("@/lib/api").then(m => m.default.post(`/reports/${id}/chat`, { question: userMessage.content }));
+      
       const assistantMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: `Based on your report, I can help with that. Your markers show some interesting patterns. Would you like me to explain more about any specific value or provide recommendations?`,
+        content: response.data.data.answer || response.data.message || "Sorry, I couldn't process your request.",
         timestamp: new Date(),
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error("Chat error:", error);
+      const errorMessage: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: "I'm sorry, there was an error processing your request. Please try again.",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setSending(false);
     }

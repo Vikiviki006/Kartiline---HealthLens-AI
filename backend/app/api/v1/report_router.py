@@ -9,23 +9,10 @@ from fastapi import APIRouter, Depends, Query, Request
 from sqlalchemy.orm import Session
 
 from app.controllers.report_controller import ReportController
-from app.core.security import get_subject_from_token
+from app.api.deps import get_current_user_id
 from app.database.session import get_db
 
 router = APIRouter(prefix="/reports", tags=["Reports"])
-
-
-def _get_user_id(request: Request) -> uuid.UUID:
-    auth = request.headers.get("Authorization", "")
-    if auth.startswith("Bearer "):
-        subject = get_subject_from_token(auth[7:])
-        try:
-            # Try to parse as UUID
-            return uuid.UUID(subject)
-        except ValueError:
-            # If it's an email (demo mode), generate a consistent UUID from it
-            return uuid.uuid5(uuid.NAMESPACE_DNS, subject)
-    return uuid.UUID("00000000-0000-0000-0000-000000000001")
 
 
 @router.get("", summary="List all reports for the current user")
@@ -38,9 +25,9 @@ def list_reports(
     sort_by: str = Query(default="created_at"),
     sort_order: str = Query(default="desc", pattern="^(asc|desc)$"),
     db: Session = Depends(get_db),
+    user_id: uuid.UUID = Depends(get_current_user_id),
 ):
     """Paginated, filtered, sorted list of the user's medical reports."""
-    user_id = _get_user_id(request)
     ctrl = ReportController(db)
     return ctrl.list_reports(
         user_id=user_id,
@@ -58,9 +45,9 @@ def get_report(
     report_id: uuid.UUID,
     request: Request,
     db: Session = Depends(get_db),
+    user_id: uuid.UUID = Depends(get_current_user_id),
 ):
     """Return full report detail including extracted markers."""
-    user_id = _get_user_id(request)
     return ReportController(db).get_report(report_id, user_id)
 
 
@@ -69,9 +56,9 @@ def delete_report(
     report_id: uuid.UUID,
     request: Request,
     db: Session = Depends(get_db),
+    user_id: uuid.UUID = Depends(get_current_user_id),
 ):
     """Soft-delete a report (marks is_active=False)."""
-    user_id = _get_user_id(request)
     return ReportController(db).delete_report(report_id, user_id)
 
 
@@ -81,10 +68,10 @@ def analyze_report(
     request: Request,
     force: bool = Query(default=False, description="Force regeneration even if analysis exists"),
     db: Session = Depends(get_db),
+    user_id: uuid.UUID = Depends(get_current_user_id),
 ):
     """
     Trigger AI-powered health analysis for a report.
     Returns health summary, abnormal markers, recommendations, and doctor questions.
     """
-    user_id = _get_user_id(request)
     return ReportController(db).trigger_analysis(report_id, user_id, force)

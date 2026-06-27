@@ -79,14 +79,12 @@ export const ReportUpload: React.FC<{ onUploadSuccess?: () => void }> = ({ onUpl
         disabled={loading}
       />
 
-      <label htmlFor="file-upload" className="inline-block">
-        <button
-          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center space-x-2 mx-auto"
-          disabled={loading}
-        >
-          {loading ? <Loader className="w-5 h-5 animate-spin" /> : <UploadIcon className="w-5 h-5" />}
-          <span>{loading ? "Uploading..." : "Select File"}</span>
-        </button>
+      <label
+        htmlFor="file-upload"
+        className={`px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center space-x-2 mx-auto cursor-pointer inline-flex ${loading ? 'opacity-50 pointer-events-none' : ''}`}
+      >
+        {loading ? <Loader className="w-5 h-5 animate-spin" /> : <UploadIcon className="w-5 h-5" />}
+        <span>{loading ? "Uploading..." : "Select File"}</span>
       </label>
 
       {error && <p className="mt-4 text-red-600 text-sm">{error}</p>}

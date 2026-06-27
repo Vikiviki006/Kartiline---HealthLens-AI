@@ -86,6 +86,18 @@ class AnalysisService:
 
             self._db.commit()
             
+            # Generate overall summary
+            try:
+                import json
+                marker_data = [
+                    {"name": m.get("name"), "value": m.get("value"), "status": m.get("status")}
+                    for m in markers
+                ]
+                summary_prompt = f"Based on these health markers for the patient: {json.dumps(marker_data)}, provide a brief 2-3 sentence overall health summary for the patient. Address the patient directly."
+                report.ai_summary = gemma_service.generate_summary(summary_prompt)
+            except Exception as e:
+                logger.error(f"Failed to generate overall summary for report {report.id}: {e}")
+            
             # update report status
             report.status = ReportStatus.COMPLETED.value
             self._db.commit()

@@ -17,29 +17,20 @@ export default function Login() {
     setError("");
 
     try {
-      // Try to call the real login endpoint
-      try {
-        const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
-          { email, password },
-          { timeout: 3000 }
-        );
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+        { email, password }
+      );
 
-        // Store the JWT token from the response
-        const token = response.data.access_token;
-        localStorage.setItem("authToken", token);
-      } catch (apiError) {
-        // If backend is unavailable, create a demo token for testing
-        console.warn("Backend unavailable, using demo token");
-        const demoToken = "demo-token-" + Date.now();
-        localStorage.setItem("authToken", demoToken);
-      }
+      // Store the JWT token from the response
+      const token = response.data.access_token;
+      localStorage.setItem("authToken", token);
 
       // Small delay to ensure localStorage is synced
       await new Promise((resolve) => setTimeout(resolve, 100));
       router.push("/dashboard");
-    } catch (err) {
-      setError("Login failed. Please try again.");
+    } catch (err: any) {
+      setError(err.response?.data?.detail || "Login failed. Please try again.");
       console.error("Login error:", err);
       setLoading(false);
     }

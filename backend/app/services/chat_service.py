@@ -6,7 +6,7 @@ from app.services.gemma_service import gemma_service
 from app.core.exceptions import ReportNotFoundException
 from app.models.report_marker_model import ReportMarker
 from app.models.medical_marker_model import MedicalMarker
-
+from app.models.chat_interaction_model import ChatInteraction
 class ChatService:
     def __init__(self, db: Session):
         self._db = db
@@ -48,5 +48,16 @@ Do NOT invent new medical facts. Rely heavily on the provided RAG knowledge cont
 
 Answer the question professionally, directly addressing the user's data and the medical context provided above.
 """
-        return gemma_service.generate_summary(prompt)
-
+        answer = gemma_service.generate_summary(prompt)
+        
+        # 4. Save to database
+        chat_log = ChatInteraction(
+            user_id=user_id,
+            report_id=report_id,
+            question=question,
+            answer=answer
+        )
+        self._db.add(chat_log)
+        self._db.commit()
+        
+        return answer

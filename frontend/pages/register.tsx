@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { Activity, Mail, Lock, User } from "lucide-react";
+import axios from "axios";
 
 export default function Register() {
   const router = useRouter();
@@ -35,12 +36,25 @@ export default function Register() {
 
     setLoading(true);
     try {
-      // Demo: just store token and redirect
-      localStorage.setItem("authToken", "demo-token-" + Date.now());
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/signup`,
+        {
+          full_name: formData.fullName,
+          email: formData.email,
+          password: formData.password
+        }
+      );
+
+      const token = response.data.access_token;
+      localStorage.setItem("authToken", token);
       localStorage.setItem("userName", formData.fullName);
+      
+      // Small delay to ensure localStorage is synced
+      await new Promise((resolve) => setTimeout(resolve, 100));
       router.push("/dashboard");
-    } catch (err) {
-      setError("Registration failed");
+    } catch (err: any) {
+      setError(err.response?.data?.detail || "Registration failed. Please try again.");
+      console.error("Registration error:", err);
     } finally {
       setLoading(false);
     }

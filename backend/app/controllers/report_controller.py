@@ -72,6 +72,7 @@ class ReportController:
                 "report_date": report.report_date,
                 "ocr_engine_used": report.ocr_engine_used,
                 "extracted_text": report.extracted_text,
+                "ai_summary": getattr(report, "ai_summary", None),
                 "created_at": report.created_at.isoformat(),
                 "markers": [
                     {

@@ -25,7 +25,8 @@ export default function ReportPage() {
     };
 
     fetchReport();
-  }, [id, getReport]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   const handleAnalyze = async () => {
     if (!report) return;
@@ -119,6 +120,17 @@ export default function ReportPage() {
             </div>
           </div>
         </div>
+
+        {/* AI Summary */}
+        {report.ai_summary && (
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+            <div className="flex items-center space-x-2 mb-3">
+              <Zap className="w-5 h-5 text-blue-600" />
+              <h2 className="text-lg font-semibold text-blue-900">AI Health Summary</h2>
+            </div>
+            <p className="text-sm text-blue-800 leading-relaxed">{report.ai_summary}</p>
+          </div>
+        )}
 
         {/* Extracted Text Preview */}
         <div className="bg-white border border-gray-200 rounded-lg p-6">
