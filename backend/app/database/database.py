@@ -13,6 +13,7 @@ from app.models.report_marker_model import ReportMarker  # noqa: F401
 from app.models.marker_analysis_model import MarkerAnalysis  # noqa: F401
 from app.models.upload_model import UploadHistory  # noqa: F401
 from app.models.medical_marker_model import MedicalMarker  # noqa: F401
+from app.models.chat_interaction_model import ChatInteraction  # noqa: F401
 
 
 def init_db() -> None:

@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
-import uuid
+import uuid,traceback
 from app.services.chat_service import ChatService
 from app.core.exceptions import ReportNotFoundException
 
@@ -19,4 +19,5 @@ class ChatController:
         except ReportNotFoundException as e:
             raise HTTPException(status_code=404, detail=f"Report not found: {e.report_id}")
         except Exception as e:
+            traceback.print_exc()   # Print the full traceback
             raise HTTPException(status_code=500, detail=str(e))
