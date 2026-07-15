@@ -72,9 +72,13 @@ export default function ChatPage() {
       const assistantMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: response.data.data.answer || response.data.message || "Sorry, I couldn't process your request.",
-        timestamp: new Date(),
-      };
+        content:
+          response.data.answer ||
+          response.data.data?.answer ||
+          response.data.message ||
+          "Sorry, I couldn't process your request.",
+          timestamp: new Date(),
+        };
 
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {

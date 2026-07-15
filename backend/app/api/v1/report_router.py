@@ -75,3 +75,24 @@ def analyze_report(
     Returns health summary, abnormal markers, recommendations, and doctor questions.
     """
     return ReportController(db).trigger_analysis(report_id, user_id, force)
+
+
+@router.get("/{report_id}/pdf", summary="Export report analysis as PDF")
+def export_report_pdf(
+    report_id: uuid.UUID,
+    db: Session = Depends(get_db),
+    user_id: uuid.UUID = Depends(get_current_user_id),
+):
+    """Generate and return a beautifully structured PDF summary of the report analysis."""
+    from app.services.pdf_service import PDFService
+    from fastapi.responses import StreamingResponse
+    
+    pdf_service = PDFService(db)
+    pdf_buffer = pdf_service.generate_report_pdf(report_id, user_id)
+    
+    filename = f"HealthLens_Summary_{report_id}.pdf"
+    return StreamingResponse(
+        pdf_buffer,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f"attachment; filename={filename}"}
+    )

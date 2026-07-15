@@ -136,8 +136,11 @@ export default function ReportPage() {
         <div className="bg-white border border-gray-200 rounded-lg p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Extracted Text Preview</h2>
           <div className="bg-gray-50 border border-gray-200 rounded p-4 max-h-48 overflow-y-auto">
-            <p className="text-sm text-gray-700 whitespace-pre-wrap">{report.extracted_text.substring(0, 500)}...</p>
-          </div>
+<p className="text-sm text-gray-700 whitespace-pre-wrap">
+  {report.extracted_text
+    ? `${report.extracted_text.substring(0, 500)}...`
+    : "No extracted text available."}
+</p>          </div>
         </div>
 
         {/* Analysis Section */}

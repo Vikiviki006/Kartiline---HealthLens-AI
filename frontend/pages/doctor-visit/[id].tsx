@@ -4,12 +4,14 @@ import Link from "next/link";
 import { Layout } from "@/components/Layout";
 import { useReports, ReportDetail } from "@/lib/hooks/useReports";
 import { Loader, ArrowLeft, Download, FileText } from "lucide-react";
+import api from "@/lib/api";
 
 export default function DoctorVisitPage() {
   const router = useRouter();
   const { id } = router.query;
   const [report, setReport] = useState<ReportDetail | null>(null);
   const [loading, setLoading] = useState(true);
+  const [downloading, setDownloading] = useState(false);
   const { getReport } = useReports();
 
   useEffect(() => {
@@ -25,9 +27,29 @@ export default function DoctorVisitPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  const handleDownload = () => {
-    // In production, this would generate a PDF
-    alert("Download feature coming soon!");
+  const handleDownload = async () => {
+    if (!id) return;
+    setDownloading(true);
+    try {
+      const response = await api.get(`/reports/${id}/pdf`, {
+        responseType: "blob",
+      });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      
+      // Clean name for filename
+      const cleanName = report?.original_filename.replace(/\.[^/.]+$/, "") || "HealthLens";
+      link.setAttribute("download", `${cleanName}_Summary.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading PDF:", error);
+      alert("Failed to download PDF summary. Please try again.");
+    } finally {
+      setDownloading(false);
+    }
   };
 
   if (loading) {
@@ -65,10 +87,20 @@ export default function DoctorVisitPage() {
             </div>
             <button
               onClick={handleDownload}
-              className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              disabled={downloading}
+              className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
             >
-              <Download className="w-5 h-5" />
-              <span>Download PDF</span>
+              {downloading ? (
+                <>
+                  <Loader className="w-5 h-5 animate-spin" />
+                  <span>Downloading...</span>
+                </>
+              ) : (
+                <>
+                  <Download className="w-5 h-5" />
+                  <span>Download PDF</span>
+                </>
+              )}
             </button>
           </div>
         </div>

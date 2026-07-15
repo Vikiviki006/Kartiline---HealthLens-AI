@@ -1,400 +1,195 @@
 # 🩺 HealthLens AI
 
-> **Understand Your Health Before Your Appointment**
+### Understand Your Health Before Your Appointment
 
-HealthLens AI is an AI-powered Medical Report Intelligence Platform that transforms complex laboratory reports into easy-to-understand health insights using OCR, Artificial Intelligence, and historical trend analysis.
-
-Instead of replacing medical professionals, HealthLens empowers patients to better understand their reports, prepare for doctor consultations, and monitor their long-term health.
+HealthLens AI is an intelligent Medical Report Intelligence Platform that helps patients understand complex laboratory reports in seconds. By combining OCR, AI-powered analysis, and healthcare guidance, HealthLens transforms confusing medical data into clear, actionable insights.
 
 ---
 
-# 🎥 Demo
+## Problem Statement
 
-> Add your project demo video here.
+Millions of patients receive blood tests, diagnostic reports, and preventive health screening results every year. These reports contain medical terminology, abbreviations, and numerical values that are difficult for non-medical users to understand.
+
+As a result:
+
+* Patients experience unnecessary anxiety.
+* Important health indicators are overlooked.
+* Medical consultations become less effective.
+* Users struggle to track health changes over time.
+
+Healthcare information should be understandable, accessible, and actionable for everyone.
+
+---
+
+## Our Solution
+
+HealthLens AI enables users to upload medical reports and instantly receive easy-to-understand explanations of their health data.
+
+The platform:
+
+* Extracts values from medical reports using OCR.
+* Explains medical markers in plain language.
+* Highlights abnormal values and potential concerns.
+* Tracks trends across multiple reports.
+* Generates personalized health summaries.
+* Suggests relevant questions for doctor consultations.
+* Creates a doctor-ready report summary.
+
+HealthLens does not diagnose diseases. Instead, it empowers users to better understand their reports and communicate more effectively with healthcare professionals.
+
+---
+
+## Key Features
+
+### 📄 Smart Report Upload
+
+Upload:
+
+* Blood Test Reports
+* CBC Reports
+* Lipid Profiles
+* Thyroid Reports
+* Liver Function Tests
+* General Health Checkup Reports
+
+### 🤖 AI-Powered Explanation
+
+Convert complex medical terminology into clear explanations understandable by anyone.
+
+### ⚠️ Abnormal Marker Detection
+
+Automatically identify values outside normal ranges and explain their significance.
+
+### 📈 Health Trend Tracking
+
+Compare historical reports and visualize improvements or deteriorations over time.
+
+### 📝 Doctor Visit Preparation
+
+Generate:
+
+* Health summaries
+* Follow-up questions
+* Discussion points for consultations
+
+### 📊 Personal Health Dashboard
+
+Track health metrics through an intuitive dashboard.
+
+---
+
+## User Workflow
+
+1. User uploads a medical report.
+2. OCR extracts report data.
+3. AI analyzes markers and values.
+4. HealthLens generates explanations.
+5. Abnormal values are highlighted.
+6. Historical reports are compared.
+7. User receives a personalized health summary.
+8. Doctor consultation questions are generated.
+
+---
+
+## System Architecture
 
 ```text
-🎬 Demo Video
-[https://github.com/user-attachments/assets/your-video-link](https://drive.google.com/file/d/1t1hRiTi6brqczITpau9klfRAwQjLZYg1/view?usp=sharing)
+Medical Report Upload
+          │
+          ▼
+      OCR Engine
+          │
+          ▼
+    Data Extraction
+          │
+          ▼
+      AI Analysis
+          │
+ ┌────────┼────────┐
+ ▼        ▼        ▼
+Insights Trends Questions
+          │
+          ▼
+   Health Dashboard
 ```
 
+## Technology Stack
 
----
-
-# 🚀 Problem Statement
-
-Millions of people receive blood tests, health screenings, and diagnostic reports every year.
-
-Unfortunately:
-
-* Medical reports are difficult for non-medical users to understand.
-* Medical abbreviations create confusion.
-* Important abnormalities are often overlooked.
-* Patients become anxious before consulting doctors.
-* Tracking health improvements across reports is difficult.
-
-HealthLens AI solves these problems by converting complex reports into personalized, easy-to-understand explanations.
-
----
-
-# 💡 Solution
-
-HealthLens AI allows users to upload medical reports and instantly receive:
-
-* 📄 OCR-based report extraction
-* 🤖 AI-generated health explanations
-* ⚠️ Abnormal marker detection
-* 📈 Historical health trend analysis
-* 💬 AI chat assistant
-* 📝 Doctor visit preparation
-* 📊 Personal health dashboard
-
-The platform is educational and does **not** diagnose diseases.
-
----
-
-# ✨ Key Features
-
-## 📄 Smart Report Upload
-
-Supports:
-
-* PDF
-* JPG
-* PNG
-* TIFF
-
-with automatic validation and OCR processing.
-
----
-
-## 🤖 AI Medical Explanation
-
-Explains:
-
-* Medical terminology
-* Blood markers
-* Reference ranges
-* Health significance
-
-using Large Language Models.
-
----
-
-## ⚠️ Abnormal Marker Detection
-
-Automatically detects
-
-* Low values
-* High values
-* Critical markers
-
-and explains why they matter.
-
----
-
-## 📈 Health Trend Analysis
-
-Compare multiple reports over time.
-
-Visualize improvements or deteriorations in:
-
-* Hemoglobin
-* Glucose
-* Cholesterol
-* Platelets
-* Thyroid markers
-* Liver markers
-
----
-
-## 💬 AI Chat Assistant
-
-Users can ask questions like:
-
-> Why is my cholesterol high?
-
-> What does low hemoglobin mean?
-
-> Should I discuss Vitamin D with my doctor?
-
----
-
-## 📝 Doctor Visit Preparation
-
-Generates:
-
-* Health summary
-* Doctor questions
-* Important discussion points
-* Follow-up recommendations
-
----
-
-# 🏗️ System Architecture
-
-```text
-                Medical Report
-                      │
-                      ▼
-              Upload Interface
-                      │
-                      ▼
-                OCR Extraction
-                      │
-        ┌─────────────┴─────────────┐
-        ▼                           ▼
- Structured Medical Data      Raw OCR Text
-        │                           │
-        └─────────────┬─────────────┘
-                      ▼
-              AI Analysis Engine
-                      │
-      ┌───────────────┼────────────────┐
-      ▼               ▼                ▼
-Marker Insights   Health Trends   Doctor Questions
-      │               │                │
-      └───────────────┴────────────────┘
-                      ▼
-             Health Dashboard
-```
-
----
-
-# ⚙️ Technology Stack
-
-## Frontend
+### Frontend
 
 * Next.js
 * React
-* TypeScript
 * Tailwind CSS
-* Axios
-* Recharts
 
----
-
-## Backend
+### Backend
 
 * FastAPI
 * Python
-* SQLAlchemy
-* Alembic
-* JWT Authentication
 
----
+### AI Layer
 
-## Artificial Intelligence
-
-* OpenAI API
-* Gemini API
+* Gemini API / OpenAI API
 * Prompt Engineering
-* Medical Report Intelligence
+* Medical Knowledge Processing
 
----
-
-## OCR
+### OCR & Processing
 
 * Tesseract OCR
 * PDF Processing
-* Image Processing
 
----
-
-## Database
+### Database
 
 * PostgreSQL
 
----
+### Storage
 
-## Storage
+* AWS S3 / Cloudinary
 
-* AWS S3
-* Cloudinary
-
----
-
-## Deployment
+### Deployment
 
 * Vercel
 * Render
 
 ---
 
-# 📂 Project Structure
+## Expected Impact
 
-```text
-HealthLens-AI
+HealthLens AI helps users:
 
-frontend/
-    Next.js Application
-
-backend/
-    FastAPI Application
-
-database/
-    PostgreSQL
-
-uploads/
-    Medical Reports
-
-README.md
-```
+* Understand medical reports faster.
+* Reduce confusion and anxiety.
+* Prepare better for doctor consultations.
+* Monitor long-term health trends.
+* Make informed healthcare decisions.
 
 ---
 
-# 🔄 User Workflow
+## Future Enhancements
 
-```text
-User Login
-      │
-      ▼
-Upload Medical Report
-      │
-      ▼
-OCR Extracts Report
-      │
-      ▼
-Medical Markers Stored
-      │
-      ▼
-AI Generates Explanation
-      │
-      ▼
-Dashboard Updates
-      │
-      ▼
-Health Trends Generated
-      │
-      ▼
-Doctor Preparation Created
-      │
-      ▼
-Chat with AI
-```
+### Phase 2
+
+* Multi-language support
+* Voice-based report explanation
+* Health score generation
+* Mobile application
+
+### Phase 3
+
+* Specialist recommendation engine
+* Preventive health insights
+* Wearable device integration
+* Family health management dashboard
 
 ---
 
-# 🌐 API Overview
+## Disclaimer
 
-| Method | Endpoint              | Description    |
-| ------ | --------------------- | -------------- |
-| POST   | /upload               | Upload report  |
-| GET    | /reports              | Get reports    |
-| GET    | /reports/{id}         | Report details |
-| POST   | /reports/{id}/analyze | AI Analysis    |
-| DELETE | /reports/{id}         | Delete report  |
-| GET    | /dashboard            | Dashboard      |
+HealthLens AI is designed for educational and informational purposes only. The platform does not provide medical diagnoses, treatment recommendations, or professional healthcare advice. Users should always consult qualified healthcare professionals regarding medical decisions.
 
 ---
 
-# 🔒 Security
+## Team Vision
 
-* JWT Authentication
-* Password Hashing
-* Protected APIs
-* Input Validation
-* Secure File Upload
-* CORS Protection
+Our vision is to make healthcare information understandable for everyone. By transforming medical reports into actionable insights, HealthLens AI bridges the gap between complex healthcare data and patient understanding.
 
----
-
-# 📊 Dashboard
-
-Users can monitor
-
-* Total Reports
-* Processing Reports
-* Completed Reports
-* Abnormal Reports
-* Historical Trends
-* AI Insights
-
----
-
-# 🧠 AI Capabilities
-
-HealthLens AI can
-
-* Explain blood markers
-* Detect abnormalities
-* Summarize reports
-* Compare reports
-* Generate doctor questions
-* Answer user queries
-* Produce personalized health summaries
-
----
-
-# 🚀 Future Enhancements
-
-* Multi-language Support
-* Voice Assistant
-* Mobile App
-* Family Health Dashboard
-* Specialist Recommendation
-* Wearable Integration
-* Health Score
-* Appointment Scheduling
-
----
-
-# ⚡ Quick Start
-
-## Backend
-
-```bash
-cd backend
-pip install -r requirements.txt
-alembic upgrade head
-uvicorn app.main:app --reload
-```
-
-Backend runs on
-
-```
-http://localhost:8000
-```
-
----
-
-## Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Frontend runs on
-
-```
-http://localhost:3000
-```
-
----
-
-# 📈 Impact
-
-HealthLens AI helps users
-
-* Understand medical reports in seconds
-* Reduce confusion
-* Prepare for doctor consultations
-* Track long-term health
-* Improve health awareness
-
----
-
-# ⚠️ Disclaimer
-
-HealthLens AI is intended for educational and informational purposes only.
-
-It does not provide medical diagnosis, treatment recommendations, or professional medical advice. Users should always consult qualified healthcare professionals regarding medical decisions.
-
----
-
-# 👨‍💻 Team Vision
-
-> **"Your health data should be understandable, not intimidating."**
-
-Our mission is to bridge the gap between complex medical information and patient understanding through Artificial Intelligence, making healthcare more accessible, transparent, and empowering for everyone.
+**"Your health data should be understandable, not intimidating."**

@@ -26,7 +26,7 @@ import app.models
 async def lifespan(app: FastAPI):
     """Application startup and shutdown hooks."""
     logger.info(
-        f"🚀 Starting {settings.APP_NAME} v{settings.APP_VERSION} "
+        f"[START] Starting {settings.APP_NAME} v{settings.APP_VERSION} "
         f"[env={settings.APP_ENV}]"
     )
     # Ensure upload directory exists
@@ -34,7 +34,7 @@ async def lifespan(app: FastAPI):
     ensure_upload_dir()
     Base.metadata.create_all(bind=engine)
     yield
-    logger.info(f"🛑 {settings.APP_NAME} shutting down")
+    logger.info(f"[STOP] {settings.APP_NAME} shutting down")
 
 
 # ── App factory ────────────────────────────────────────────────────────────────

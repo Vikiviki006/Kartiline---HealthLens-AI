@@ -21,22 +21,22 @@ def main():
         command.current(alembic_cfg)
         print("\nApplying migrations...")
         command.upgrade(alembic_cfg, "head")
-        print("✓ Migrations applied successfully!")
+        print("[OK] Migrations applied successfully!")
         sys.exit(0)
     except Exception as e:
         error_msg = str(e)
         if "DuplicateTable" in error_msg or "already exists" in error_msg:
-            print("⚠ Some tables already exist - this is normal if migrations were partially run")
+            print("[WARN] Some tables already exist - this is normal if migrations were partially run")
             print("Attempting stamp to current revision...")
             try:
                 # Get the last successful migration
                 command.current(alembic_cfg)
-                print("✓ Database is at current migration level")
+                print("[OK] Database is at current migration level")
             except:
-                print("✓ Database migration status resolved")
+                print("[OK] Database migration status resolved")
             sys.exit(0)
         else:
-            print(f"✗ Error applying migrations: {e}")
+            print(f"[ERROR] Error applying migrations: {e}")
             import traceback
             traceback.print_exc()
             sys.exit(1)
