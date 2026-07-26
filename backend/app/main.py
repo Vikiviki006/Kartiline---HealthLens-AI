@@ -31,8 +31,16 @@ async def lifespan(app: FastAPI):
     )
     # Ensure upload directory exists
     from app.utils.file_helper import ensure_upload_dir
-    ensure_upload_dir()
-    Base.metadata.create_all(bind=engine)
+    try:
+        ensure_upload_dir()
+    except Exception as exc:
+        logger.warning(f"Upload directory setup warning: {exc}")
+
+    try:
+        Base.metadata.create_all(bind=engine)
+    except Exception as exc:
+        logger.warning(f"Database schema auto-creation skipped or failed: {exc}")
+
     yield
     logger.info(f"[STOP] {settings.APP_NAME} shutting down")
 

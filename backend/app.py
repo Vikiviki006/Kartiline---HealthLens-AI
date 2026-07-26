@@ -1,15 +1,13 @@
-from fastapi import FastAPI
-from api.upload import router as upload_router
+"""
+HealthLens AI — Root Application Entrypoint for local running and Vercel serverless functions.
+"""
 
-app = FastAPI(
-    title="HealthLens AI",
-    version="1.0.0"
-)
+import os
+import sys
 
-app.include_router(upload_router)
+# Ensure backend root directory is in sys.path for Vercel and local runners
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-@app.get("/")
-def home():
-    return {
-        "message": "HealthLens AI Backend Running"
-    }
+from app.main import app
+
+__all__ = ["app"]

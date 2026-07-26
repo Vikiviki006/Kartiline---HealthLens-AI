@@ -15,7 +15,12 @@ from app.utils.logger import logger
 def ensure_upload_dir() -> Path:
     """Ensure the upload directory exists and return its Path."""
     upload_path = Path(settings.UPLOAD_DIR)
-    upload_path.mkdir(parents=True, exist_ok=True)
+    try:
+        upload_path.mkdir(parents=True, exist_ok=True)
+    except OSError:
+        # Fallback to /tmp directory for serverless environments (e.g., Vercel)
+        upload_path = Path("/tmp") / settings.UPLOAD_DIR
+        upload_path.mkdir(parents=True, exist_ok=True)
     return upload_path
 
 
